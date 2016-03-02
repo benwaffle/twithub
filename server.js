@@ -37,7 +37,7 @@ app.post('/', (req, res) => {
             let title = data.issue.title;
             let url = data.issue.html_url;
             let twitterUser = githubToTwitter[owner];
-            let tweet = `@${twitterUser} ${project}: ${user} ${action} issue "${title.slice(0, 79}"
+            let tweet = `@${twitterUser} ${project}: ${user} ${action} issue "${title.slice(0, 79)}"
 ${url}`;
             console.log(`Tweeting: ${tweet}`);
             twitter.tweet(tweet, (err, tweet) => {
