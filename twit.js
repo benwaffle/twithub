@@ -1,3 +1,6 @@
+// vim: set et ts=4 sw=4
+'use strict';
+
 var Twitter = require('twitter');
 var client = new Twitter({
 	consumer_key: 'j5oWVtmbD3MnrGtRk0jMOEI4z',

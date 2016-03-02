@@ -1,4 +1,6 @@
+// vim: set et ts=4 sw=4
 'use strict';
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
