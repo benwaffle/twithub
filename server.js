@@ -66,11 +66,12 @@ ${url}`;
                 issues[ghid].push(twid);
             });
         } else if (event == "pull_request") {
+            let action = data.action;
             let title = data.pull_request.title;
             let url = data.pull_request.html_url;
             let body = lencheck(data.pull_request.body);
             let twitterUser = githubToTwitter[owner];
-            let tweet = `@${twitterUser} ${project}: ${user} submitted a pull request: "${title}"
+            let tweet = `@${twitterUser} ${project}: ${user} ${action} a pull request: "${title}"
 ${body}
 ${url}`;
             twitter.tweet(tweet, (err) => {
