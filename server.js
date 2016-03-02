@@ -17,7 +17,7 @@ function lencheck(data){
 	if (data.length >= 80){
 		return data.slice(0, 79);
 	} else if (data == null){
-		return "Nothing in body of pull request"
+		return "Nothing in body.";
 	} else {
 		return data;
     }
