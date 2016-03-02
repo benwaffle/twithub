@@ -19,6 +19,8 @@ function reply(status, callback) {
 }
 
 
-module.exports = { tweet,
-		   reply
+module.exports = {
+	tweet,
+	reply,
+	linkLength: 23
 };
