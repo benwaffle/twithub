@@ -15,13 +15,14 @@ app.post('/', (req, res) => {
     let data = req.body;
     let event = req.headers['x-github-event'];
     if (event) {
-        let project = data.repository.name;
+        let owner = data.repository.owner.login;
         let user = data.sender.login;
+        let project = data.repository.name;
         if (event == "issues") {
             let action = data.action;
             let title = data.issue.title;
             let url = data.issue.html_url;
-            let twitterUser = githubToTwitter[user];
+            let twitterUser = githubToTwitter[owner];
             let tweet = `@${twitterUser} ${project}: ${user} ${action} issue "${title}"
 ${url}`;
             console.log(`Tweeting: ${tweet}`);
@@ -33,7 +34,7 @@ ${url}`;
             let title = data.issue.title;
             let url = data.issue.html_url;
             let comment = data.comment.body;
-            let twitterUser = githubToTwitter[user];
+            let twitterUser = githubToTwitter[owner];
             let tweet = `@${twitterUser} ${project}: ${user} commented on issue "${title}"
 ${comment}
 ${url}`;
