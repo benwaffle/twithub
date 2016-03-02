@@ -1,7 +1,3 @@
-child_process.exec("~/.rvm/bin/<prefix>_twit.rb", {cwd: '/'}, function(err, stdout){
-  console.log(stdout)
-  });
-
 'use strict';
 const express = require('express');
 const bodyParser = require('body-parser');
