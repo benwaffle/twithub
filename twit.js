@@ -11,7 +11,7 @@ var client = new Twitter({
 
 // callback: (error, tweet body, raw response object) => {}
 function tweet(status, callback) {
-	console.log(`Tweeting ${status.status}`);
+	console.log(`Tweeting ${status}`);
 	client.post('statuses/update', {status}, callback);
 }
 
