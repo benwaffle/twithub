@@ -11,7 +11,9 @@ function tweet(status, callback) {
 	client.post('statuses/update', {status}, callback);
 }
 
+
 //NOT CORRECT, USE in_reply_to_status_id
+//https://github.com/mirakui/retrobot/pull/7
 function reply(status, callback) {
 	client.post('statuses/update', {status}, callback);
 }
