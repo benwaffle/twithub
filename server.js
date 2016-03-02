@@ -22,7 +22,8 @@ app.post('/', (req, res) => {
             let title = data.issue.title;
             let url = data.issue.html_url;
             let twitterUser = githubToTwitter[user];
-            let tweet = `@${twitterUser} ${project}: ${user} ${action} issue '${title}'\n${url}`;
+            let tweet = `@${twitterUser} ${project}: ${user} ${action} issue "${title}"
+${url}`;
             console.log(`Tweeting: ${tweet}`);
             twitter.tweet(tweet, (err) => {
                 if (err)
@@ -33,7 +34,9 @@ app.post('/', (req, res) => {
             let url = data.issue.html_url;
             let comment = data.comment.body;
             let twitterUser = githubToTwitter[user];
-            let tweet = `@${twitterUser} ${project}: ${user} commented on issue '${title}'\n${comment}\n${url}`;
+            let tweet = `@${twitterUser} ${project}: ${user} commented on issue "${title}"
+${comment}
+${url}`;
             console.log(`Tweeting: ${tweet}`);
             twitter.tweet(tweet, (err) => {
                 if (err)
