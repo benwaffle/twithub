@@ -11,4 +11,12 @@ function tweet(status, callback) {
 	client.post('statuses/update', {status}, callback);
 }
 
-module.exports = { tweet };
+//NOT CORRECT, USE in_reply_to_status_id
+function reply(status, callback) {
+	client.post('statuses/update', {status}, callback);
+}
+
+
+module.exports = { tweet,
+		   reply
+};
