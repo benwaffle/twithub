@@ -15,9 +15,8 @@ var issues = {}; // issue ID => twitter IDs
 
 app.use(bodyParser.json());
 
-/**
 function lencheck(data){
-	if (data == null){
+	if (data == null) {
 		return "";
 	} else if (data.length >= 80){
 		return data.slice(0, 79);
@@ -25,7 +24,6 @@ function lencheck(data){
 		return data;
     }
 }
-**/
 
 app.post('/', (req, res) => {
     let data = req.body;
@@ -36,12 +34,11 @@ app.post('/', (req, res) => {
         let project = data.repository.name;
         if (event == "issues") {
             let action = data.action;
-            let title = data.issue.title;
+            let title = lencheck(data.issue.title);
             let url = data.issue.html_url;
             let twitterUser = githubToTwitter[owner];
-            let tweet = `@${twitterUser} ${project}: ${user} ${action} issue "${title.slice(0, 79)}"
+            let tweet = `@${twitterUser} ${project}: ${user} ${action} issue "${title}"
 ${url}`;
-            console.log(`Tweeting: ${tweet}`);
             twitter.tweet(tweet, (err, tweet) => {
                 if (err)
                     return console.log(err);
@@ -52,14 +49,13 @@ ${url}`;
                 issues[ghid].push(twid);
             });
         } else if (event == "issue_comment") {
-            let title = data.issue.title;
+            let title = lencheck(data.issue.title);
             let url = data.issue.html_url;
             let comment = data.comment.body;
             let twitterUser = githubToTwitter[owner];
             let tweet = `@${twitterUser} ${project}: ${user} commented on issue "${title}"
 ${comment.slice(0, 79)}
 ${url}`;
-            console.log(`Tweeting: ${tweet}`);
             twitter.tweet(tweet, (err) => {
                 if (err)
                     return console.log(err);
@@ -72,11 +68,15 @@ ${url}`;
         } else if (event == "pull_request") {
             let title = data.pull_request.title;
             let url = data.pull_request.html_url;
-            let body = data.pull_request.body;
+            let body = lencheck(data.pull_request.body);
             let twitterUser = githubToTwitter[owner];
             let tweet = `@${twitterUser} ${project}: ${user} submitted a pull request: "${title}"
-${body.slice(0, 79)}
+${body}
 ${url}`;
+            twitter.tweet(tweet, (err) => {
+                if (err)
+                    return console.log(err);
+            });
         } else {
             console.log(`unknown github event: ${event}`);
         }
