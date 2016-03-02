@@ -11,6 +11,13 @@ const githubToTwitter = {
 
 app.use(bodyParser.json());
 
+function lencheck(data){
+	if (data.length >= 80){
+		return data.slice(0, 79);
+	} else {
+		return data
+}
+
 app.post('/', (req, res) => {
     let data = req.body;
     let event = req.headers['x-github-event'];
@@ -20,7 +27,7 @@ app.post('/', (req, res) => {
         let project = data.repository.name;
         if (event == "issues") {
             let action = data.action;
-            let title = data.issue.title;
+            let title = lencheck(data.issue.title);
             let url = data.issue.html_url;
             let twitterUser = githubToTwitter[owner];
             let tweet = `@${twitterUser} ${project}: ${user} ${action} issue "${title}"
@@ -33,7 +40,7 @@ ${url}`;
         } else if (event == "issue_comment") {
             let title = data.issue.title;
             let url = data.issue.html_url;
-            let comment = data.comment.body;
+            let comment = lencheck(data.comment.body);
             let twitterUser = githubToTwitter[owner];
             let tweet = `@${twitterUser} ${project}: ${user} commented on issue "${title}"
 ${comment}
@@ -46,7 +53,7 @@ ${url}`;
         } else if (event == "pull_request") {
 		let title = data.pull_request.title;
 		let url = data.pull_request.html_url;
-		let body = data.pull_request.body;
+		let body = lencheck(data.pull_request.body);
 		let twitterUser = githubToTwitter[owner];
 		let tweet = `@{twitterUser} ${project}: ${user} submitted a pull request: "${title}"
 ${body}
