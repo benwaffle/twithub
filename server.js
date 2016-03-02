@@ -14,10 +14,10 @@ var issues = {}; // issue ID => twitter IDs
 app.use(bodyParser.json());
 
 function lencheck(data){
-	if (data.length >= 80){
+	if (data == null){
+		return "";
+	} else if (data.length >= 80){
 		return data.slice(0, 79);
-	} else if (data == null){
-		return "Nothing in body.";
 	} else {
 		return data;
     }
