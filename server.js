@@ -43,7 +43,15 @@ ${url}`;
                 if (err)
                     console.log(err);
             });
-        } else {
+        } else if (event == "pull_request") {
+		let title = data.pull_request.title;
+		let url = data.pull_request.html_url;
+		let body = data.pull_request.body;
+		let twitterUser = githubToTwitter[owner];
+		let tweet = `@{twitterUser} ${project}: ${user} submitted a pull request: "${title}"
+${body}
+${url}`;
+	} else {
             console.log(`unknown github event: ${event}`);
         }
     } else {
