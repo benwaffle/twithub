@@ -13,6 +13,7 @@ var issues = {}; // issue ID => twitter IDs
 
 app.use(bodyParser.json());
 
+/**
 function lencheck(data){
 	if (data == null){
 		return "";
@@ -22,6 +23,7 @@ function lencheck(data){
 		return data;
     }
 }
+**/
 
 app.post('/', (req, res) => {
     let data = req.body;
@@ -32,10 +34,10 @@ app.post('/', (req, res) => {
         let project = data.repository.name;
         if (event == "issues") {
             let action = data.action;
-            let title = lencheck(data.issue.title);
+            let title = data.issue.title;
             let url = data.issue.html_url;
             let twitterUser = githubToTwitter[owner];
-            let tweet = `@${twitterUser} ${project}: ${user} ${action} issue "${title}"
+            let tweet = `@${twitterUser} ${project}: ${user} ${action} issue "${title.slice(0, 79}"
 ${url}`;
             console.log(`Tweeting: ${tweet}`);
             twitter.tweet(tweet, (err, tweet) => {
@@ -50,10 +52,10 @@ ${url}`;
         } else if (event == "issue_comment") {
             let title = data.issue.title;
             let url = data.issue.html_url;
-            let comment = lencheck(data.comment.body);
+            let comment = data.comment.body;
             let twitterUser = githubToTwitter[owner];
             let tweet = `@${twitterUser} ${project}: ${user} commented on issue "${title}"
-${comment}
+${comment.slice(0, 79)}
 ${url}`;
             console.log(`Tweeting: ${tweet}`);
             twitter.tweet(tweet, (err) => {
@@ -68,10 +70,10 @@ ${url}`;
         } else if (event == "pull_request") {
             let title = data.pull_request.title;
             let url = data.pull_request.html_url;
-            let body = lencheck(data.pull_request.body);
+            let body = data.pull_request.body;
             let twitterUser = githubToTwitter[owner];
             let tweet = `@${twitterUser} ${project}: ${user} submitted a pull request: "${title}"
-${body}
+${body.slice(0, 79)}
 ${url}`;
         } else {
             console.log(`unknown github event: ${event}`);
