@@ -9,6 +9,8 @@ const githubToTwitter = {
     'khayyamsaleem': 'KhayyamSaleem',
 };
 
+var issues = {}; // issue ID => twitter IDs
+
 app.use(bodyParser.json());
 
 app.post('/', (req, res) => {
@@ -26,9 +28,14 @@ app.post('/', (req, res) => {
             let tweet = `@${twitterUser} ${project}: ${user} ${action} issue "${title}"
 ${url}`;
             console.log(`Tweeting: ${tweet}`);
-            twitter.tweet(tweet, (err) => {
+            twitter.tweet(tweet, (err, tweet) => {
                 if (err)
-                    console.log(err);
+                    return console.log(err);
+                let ghid = data.issue.id.toString();
+                let twid = tweet.id_str;
+                if (!issues[ghid])
+                    issues[ghid] = [];
+                issues[ghid].push(twid);
             });
         } else if (event == "issue_comment") {
             let title = data.issue.title;
@@ -41,17 +48,22 @@ ${url}`;
             console.log(`Tweeting: ${tweet}`);
             twitter.tweet(tweet, (err) => {
                 if (err)
-                    console.log(err);
+                    return console.log(err);
+                let ghid = data.issue.id.toString();
+                let twid = tweet.id_str;
+                if (!issues[ghid])
+                    issues[ghid] = [];
+                issues[ghid].push(twid);
             });
         } else if (event == "pull_request") {
-		let title = data.pull_request.title;
-		let url = data.pull_request.html_url;
-		let body = data.pull_request.body;
-		let twitterUser = githubToTwitter[owner];
-		let tweet = `@{twitterUser} ${project}: ${user} submitted a pull request: "${title}"
+            let title = data.pull_request.title;
+            let url = data.pull_request.html_url;
+            let body = data.pull_request.body;
+            let twitterUser = githubToTwitter[owner];
+            let tweet = `@${twitterUser} ${project}: ${user} submitted a pull request: "${title}"
 ${body}
 ${url}`;
-	} else {
+        } else {
             console.log(`unknown github event: ${event}`);
         }
     } else {
