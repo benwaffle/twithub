@@ -17,8 +17,7 @@ function tweet(status, callback) {
 function reply(status, callback) {
 	client.post('statuses/update', {status}, callback);
 }
-
-
+	
 module.exports = {
 	tweet,
 	reply,
