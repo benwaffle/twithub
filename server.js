@@ -17,7 +17,8 @@ function lencheck(data){
 	if (data.length >= 80){
 		return data.slice(0, 79);
 	} else {
-		return data
+		return data;
+    }
 }
 
 app.post('/', (req, res) => {
@@ -63,19 +64,11 @@ ${url}`;
                 issues[ghid].push(twid);
             });
         } else if (event == "pull_request") {
-<<<<<<< HEAD
-		let title = data.pull_request.title;
-		let url = data.pull_request.html_url;
-		let body = lencheck(data.pull_request.body);
-		let twitterUser = githubToTwitter[owner];
-		let tweet = `@{twitterUser} ${project}: ${user} submitted a pull request: "${title}"
-=======
             let title = data.pull_request.title;
             let url = data.pull_request.html_url;
-            let body = data.pull_request.body;
+            let body = lencheck(data.pull_request.body);
             let twitterUser = githubToTwitter[owner];
             let tweet = `@${twitterUser} ${project}: ${user} submitted a pull request: "${title}"
->>>>>>> e7c3cc19fc3caa7cc1b1aafd62087d63c1a5983c
 ${body}
 ${url}`;
         } else {
