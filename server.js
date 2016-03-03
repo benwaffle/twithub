@@ -60,7 +60,7 @@ app.post('/', (req, res) => {
             let action = data.action;
             let emoji = action;
             if (action == "opened"){
-                emoji = "📬";
+                emoji = "💩";
             } else if (action == "closed") {
                 emoji = "🙏";
             }
