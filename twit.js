@@ -33,5 +33,6 @@ function reply(status, callback) {
 module.exports = {
 	tweet,
 	reply,
+	listen,
 	linkLength: 23
 };
