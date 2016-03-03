@@ -102,10 +102,9 @@ ${url}`;
                     return console.log(err);
             });
         } else if (event == "watch") {
-            let action = data.action;
-            let repo = data.repository;
-            let url = data.watch.html_url;
-            let tweet = `${user} starred 🌟 ${repo} 
+            let repo = data.repository.name;
+            let url = data.repository.html_url;
+            let tweet = `${user} starred 🌟 ${repo}
 ${url}`;
             twitter.tweet(tweet, (err) => {
                 if (err)
