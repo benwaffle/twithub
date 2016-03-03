@@ -35,11 +35,11 @@ twitter.listen(tweet => {
         console.log(`Replying to ${issues[twid]}`);
         let issue = issues[twid];
         let text = tweet.text.replace('@TwithubB ', '');
-        let comment = `**Comment by ${tweet.user.login}**
+        let comment = `**Comment by ${tweet.user.name}**
 
 ---
 
-${text}`
+${text}`;
         client.issue(issue[0], issue[1]).createComment({ body: comment }, (err, data) => {
             if (err)
                 console.log(err);
