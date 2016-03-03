@@ -19,12 +19,12 @@ var issues = {}; // tweet ID => ['owner/repo', issueNum]
 app.use(bodyParser.json());
 
 function lencheck(data){
-	if (data == null) {
-		return "";
-	} else if (data.length >= 80){
-		return data.slice(0, 79);
-	} else {
-		return data;
+    if (data == null) {
+        return "";
+    } else if (data.length >= 80){
+        return data.slice(0, 79);
+    } else {
+        return data;
     }
 }
 
@@ -95,23 +95,22 @@ ${url}`;
                 if (err)
                     return console.log(err);
             });
-        } else if (event == watch) {
-		let action = data.action;
-		let repo = data.repository;
-		let url = data.watch.html_url;
-		let tweet = `${user} starred ${repo} 🌟
+        } else if (event == "watch") {
+            let action = data.action;
+            let repo = data.repository;
+            let url = data.watch.html_url;
+            let tweet = `${user} starred ${repo} 🌟
 ${url}`;
-		twitter.tweet(tweet, (err) => {
-			if (err)
-				return console.log(err);
-		});
-	} else {
+            twitter.tweet(tweet, (err) => {
+                if (err)
+                    return console.log(err);
+            });
+        } else {
             console.log(`unknown github event: ${event}`);
         }
     } else {
         console.log("Post request without github event");
     }
-    console.log('\n');
     res.send('ok');
 });
 
