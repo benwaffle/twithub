@@ -1,4 +1,4 @@
-// vim: set et ts=4 sw=4
+// vim: et ts=4 sw=4
 'use strict';
 
 const express = require('express');
@@ -57,10 +57,16 @@ app.post('/', (req, res) => {
         let project = data.repository.name;
         if (event == "issues") {
             let action = data.action;
+            let emoji = "📬";
+            if (action == "opened"){
+                emoji = "📬";
+            } else if (action == "closed") {
+                emoji = "🙏";
+            }
             let title = lencheck(data.issue.title);
             let url = data.issue.html_url;
             let twitterUser = githubToTwitter[owner];
-            let tweet = `@${twitterUser} 🍆 ${project}: ${user} ${action} issue "${title}"
+            let tweet = `@${twitterUser} ${emoji} ${project}: ${user} ${action} issue "${title}"
 ${url}`;
             twitter.tweet(tweet, (err, tweet) => {
                 if (err)
@@ -73,7 +79,7 @@ ${url}`;
             let url = data.issue.html_url;
             let comment = data.comment.body;
             let twitterUser = githubToTwitter[owner];
-            let tweet = ` @${twitterUser} ಠ_ಠ  ${project}: ${user} commented on issue "${title}"
+            let tweet = ` @${twitterUser}  ${project}: ${user} commented 💬 on issue "${title}"
 ${comment.slice(0, 79)}
 ${url}`;
             twitter.tweet(tweet, (err) => {
@@ -88,7 +94,7 @@ ${url}`;
             let url = data.pull_request.html_url;
             let body = lencheck(data.pull_request.body);
             let twitterUser = githubToTwitter[owner];
-            let tweet = `@${twitterUser} 😕  ${project}: ${user} ${action} a pull request: "${title}"
+            let tweet = `@${twitterUser} 😕 ${project}: ${user} ${action} a pull request: "${title}"
 ${body}
 ${url}`;
             twitter.tweet(tweet, (err) => {
@@ -99,7 +105,7 @@ ${url}`;
             let action = data.action;
             let repo = data.repository;
             let url = data.watch.html_url;
-            let tweet = `${user} starred ${repo} 🌟
+            let tweet = `${user} starred 🌟 ${repo} 
 ${url}`;
             twitter.tweet(tweet, (err) => {
                 if (err)
