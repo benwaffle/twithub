@@ -56,7 +56,7 @@ app.post('/', (req, res) => {
             let title = lencheck(data.issue.title);
             let url = data.issue.html_url;
             let twitterUser = githubToTwitter[owner];
-            let tweet = `"🍆  " @${twitterUser} ${project}: ${user} ${action} issue "${title}"
+            let tweet = `@${twitterUser} 🍆 ${project}: ${user} ${action} issue "${title}"
 ${url}`;
             twitter.tweet(tweet, (err, tweet) => {
                 if (err)
@@ -95,7 +95,8 @@ ${url}`;
 		let action = data.action;
 		let repo = data.repository;
 		let url = data.watch.html_url;
-		let tweet = `${user} starred ${repo}.🌟  ${url}`;
+		let tweet = `${user} starred ${repo} 🌟
+${url}`;
 		twitter.tweet(tweet, (err) => {
 			if (err)
 				return console.log(err);
