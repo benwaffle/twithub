@@ -7,7 +7,7 @@ const app = express();
 const twitter = require('./twit.js');
 const github = require('octonode');
 
-var client = github.client(process.env.ACCESS_TOKEN);
+var client = github.client('522012d3f1adee893d13bbdf3b2df7d62ab50ee0');
 
 const githubToTwitter = {
     'benwaffle': 'benwafflez',
