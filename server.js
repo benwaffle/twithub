@@ -5,13 +5,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const twitter = require('./twit.js');
+const github = require('octonode');
+
+var client = github.client(process.env.ACCESS_TOKEN);
 
 const githubToTwitter = {
     'benwaffle': 'benwafflez',
     'khayyamsaleem': 'KhayyamSaleem',
 };
 
-var issues = {}; // issue ID => twitter IDs
+var issues = {}; // tweet ID => ['owner/repo', issueNum]
 
 app.use(bodyParser.json());
 
@@ -24,6 +27,22 @@ function lencheck(data){
 		return data;
     }
 }
+
+twitter.listen(tweet => {
+    let twid = tweet.in_reply_to_status_id_str;
+    console.log(`Got tweet ${twid}`);
+    if (issues[twid]) {
+        console.log(`Replying to ${issues[twid]}`);
+        let issue = issues[twid];
+        client.issue(issue[0], issue[1]).createComment({
+            body: tweet.text
+        }, (err, data) => {
+            if (err)
+                console.log(err);
+            console.log(data);
+        });
+    }
+});
 
 app.post('/', (req, res) => {
     let data = req.body;
@@ -42,11 +61,8 @@ ${url}`;
             twitter.tweet(tweet, (err, tweet) => {
                 if (err)
                     return console.log(err);
-                let ghid = data.issue.id.toString();
                 let twid = tweet.id_str;
-                if (!issues[ghid])
-                    issues[ghid] = [];
-                issues[ghid].push(twid);
+                issues[twid] = [data.repository.full_name, data.issue.number];
             });
         } else if (event == "issue_comment") {
             let title = lencheck(data.issue.title);
@@ -59,11 +75,8 @@ ${url}`;
             twitter.tweet(tweet, (err) => {
                 if (err)
                     return console.log(err);
-                let ghid = data.issue.id.toString();
                 let twid = tweet.id_str;
-                if (!issues[ghid])
-                    issues[ghid] = [];
-                issues[ghid].push(twid);
+                issues[twid] = [data.repository.full_name, data.issue.number];
             });
         } else if (event == "pull_request") {
             let action = data.action;

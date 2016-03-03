@@ -9,6 +9,15 @@ var client = new Twitter({
 	access_token_secret: 'IZ06WkLDpmCzvLXf6tTKVYl893xPIV39PK7wUCHovf8qc'
 });
 
+function listen(callback) {
+	client.stream('user', {replies: 'all', track: 'TwithubB'}, (stream) => {
+		stream.on('data', callback);
+		stream.on('error', err => {
+			console.log(err);
+		});
+	});
+}
+
 // callback: (error, tweet body, raw response object) => {}
 function tweet(status, callback) {
 	console.log(`Tweeting ${status}`);
