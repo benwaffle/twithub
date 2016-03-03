@@ -55,9 +55,10 @@ app.post('/', (req, res) => {
         let owner = data.repository.owner.login;
         let user = data.sender.login;
         let project = data.repository.name;
+        let twitterUser = githubToTwitter[owner];
         if (event == "issues") {
             let action = data.action;
-            let emoji = "📬";
+            let emoji = action;
             if (action == "opened"){
                 emoji = "📬";
             } else if (action == "closed") {
@@ -65,7 +66,6 @@ app.post('/', (req, res) => {
             }
             let title = lencheck(data.issue.title);
             let url = data.issue.html_url;
-            let twitterUser = githubToTwitter[owner];
             let tweet = `@${twitterUser} ${emoji} ${project}: ${user} ${action} issue "${title}"
 ${url}`;
             twitter.tweet(tweet, (err, tweet) => {
@@ -78,7 +78,6 @@ ${url}`;
             let title = lencheck(data.issue.title);
             let url = data.issue.html_url;
             let comment = data.comment.body;
-            let twitterUser = githubToTwitter[owner];
             let tweet = ` @${twitterUser}  ${project}: ${user} commented 💬 on issue "${title}"
 ${comment.slice(0, 79)}
 ${url}`;
@@ -93,7 +92,6 @@ ${url}`;
             let title = data.pull_request.title;
             let url = data.pull_request.html_url;
             let body = lencheck(data.pull_request.body);
-            let twitterUser = githubToTwitter[owner];
             let tweet = `@${twitterUser} 😕 ${project}: ${user} ${action} a pull request: "${title}"
 ${body}
 ${url}`;
@@ -104,7 +102,7 @@ ${url}`;
         } else if (event == "watch") {
             let repo = data.repository.name;
             let url = data.repository.html_url;
-            let tweet = `${user} starred 🌟 ${repo}
+            let tweet = `@${twitterUser} ${user} starred 🌟 ${repo}
 ${url}`;
             twitter.tweet(tweet, (err) => {
                 if (err)
