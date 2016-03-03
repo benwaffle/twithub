@@ -108,7 +108,15 @@ ${url}`;
                 if (err)
                     return console.log(err);
             });
-        } else {
+        } else if (event == "fork") {
+	    let url = data.forkee.html_url;
+	    let tweet = `@${twitterUser} 🍴 ${user} forked ${project}
+${url}`;
+            twitter.tweet(tweet, (err) => {
+                if (err)
+                    return console.log(err);
+            });
+	} else {
             console.log(`unknown github event: ${event}`);
         }
     } else {
